@@ -1,0 +1,18 @@
+@startuml
+class User {
+	- String username
+	- String password
+	- ZonedDateTime createdAt
+}
+class Client {
+    - Long dni
+    - String fullName
+    - ZonedDateTime createdAt
+    - Boolean enabled
+}
+Client "1.*" o-- "1.*" Fee : - fees 
+class Fee {
+	- ZonedDateTime paymentDate
+	- Double paymentAmmount
+}
+@enduml

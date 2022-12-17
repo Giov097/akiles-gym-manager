@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+
+<BorderPane maxHeight="250.0" maxWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gero.dev.controller.ErrorController">
+    <bottom>
+        <Button alignment="CENTER" contentDisplay="CENTER" onAction="#close" text="OK" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="Franklin Gothic Medium" size="12.0" />
+            </font>
+            <BorderPane.margin>
+                <Insets bottom="10.0" />
+            </BorderPane.margin>
+        </Button>
+    </bottom>
+    <center>
+        <Label fx:id="errorMessage" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="Franklin Gothic Medium" size="14.0" />
+            </font>
+        </Label>
+    </center>
+</BorderPane>

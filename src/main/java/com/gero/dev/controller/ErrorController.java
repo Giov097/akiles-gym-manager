@@ -37,6 +37,7 @@ public class ErrorController {
 	public static void showError(Thread t, Throwable e) {
 		log.error("***Default exception handler***");
 		log.error(e.getClass().getSimpleName());
+		e.printStackTrace();
 		if (Platform.isFxApplicationThread()) {
 			showErrorDialog(e);
 		} else {

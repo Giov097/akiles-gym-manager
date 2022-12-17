@@ -6,20 +6,29 @@ import java.time.Month;
 import java.time.Year;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javax.persistence.EntityExistsException;
+import javax.transaction.Transactional;
+
 import org.hibernate.Session;
+import org.modelmapper.ModelMapper;
 
 import com.gero.dev.application.data.SelectedData;
 import com.gero.dev.domain.Client;
 import com.gero.dev.domain.Fee;
-import com.gero.dev.model.ClientModel;
+import com.gero.dev.domain.FeeId;
+import com.gero.dev.exception.PaymentExistsException;
 import com.gero.dev.persistence.HibernateConnection;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -29,8 +38,6 @@ import javafx.scene.input.KeyEvent;
 public class RegisterFeeController implements Initializable {
 
 	private Session session = HibernateConnection.getCurrentSession();
-
-	private ClientModel selectedClient;
 
 	@FXML
 	private TextField dniInput;
@@ -49,22 +56,32 @@ public class RegisterFeeController implements Initializable {
 
 	@FXML
 	private TextField paymentAmmountInput;
+	
+	private ModelMapper modelMapper = new ModelMapper();
 
 	@FXML
+	@Transactional
 	protected void createFee(ActionEvent actionEvent) {
-		Fee fee = new Fee();
-		fee.setPaymentDate(paymentDateInput.getValue().atStartOfDay(ZoneId.systemDefault()));
-		fee.setMonth(Month.of(monthInput.getValue()));
-		fee.setYear(yearInput.getValue());
-		fee.setPaymentAmmount(Double.valueOf(paymentAmmountInput.getText()));
-		session.beginTransaction();
-		session.merge(fee);
-		session.getTransaction().commit();
-		Client client = session.find(Client.class, Long.valueOf(dniInput.getText()));
-		client.getFees().add(fee);
-		session.beginTransaction();
-		session.merge(client);
-		session.getTransaction().commit();
+		try {
+			Fee fee = new Fee();
+			fee.setPaymentDate(paymentDateInput.getValue().atStartOfDay(ZoneId.systemDefault()));
+			fee.setMonth(Month.of(monthInput.getValue()));
+			fee.setYear(yearInput.getValue().getValue());
+			fee.setPaymentAmmount(Double.valueOf(paymentAmmountInput.getText()));
+			Client client = session.find(Client.class, Long.valueOf(dniInput.getText()));
+			fee.setClient(client);
+			Optional.ofNullable(session.get(Fee.class, modelMapper.map(fee, FeeId.class))).ifPresent(f -> {
+				throw new EntityExistsException();
+			});
+			session.beginTransaction();
+			session.persist(fee);
+			session.getTransaction().commit();
+			creationSuccessful();
+			close();
+		} catch (EntityExistsException e) {
+			session.getTransaction().rollback();
+			throw new PaymentExistsException(yearInput.getValue(), monthInput.getValue());
+		}
 	}
 
 	@FXML
@@ -92,14 +109,12 @@ public class RegisterFeeController implements Initializable {
 				keyEvent.consume();
 			}
 		});
-		System.out.println(selectedClient);
 		clientInput.setText(SelectedData.getClient().getFullName());
 		dniInput.setText(SelectedData.getClient().getDni().toString());
 	}
 
-	public void initData(ClientModel client) {
-		this.selectedClient = client;
-		System.out.println(selectedClient);
+	private void creationSuccessful() {
+		Alert alert = new Alert(AlertType.INFORMATION, "Pago registrado exitosamente", ButtonType.OK);
+		alert.showAndWait();
 	}
-
 }

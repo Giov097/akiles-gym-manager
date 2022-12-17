@@ -77,7 +77,6 @@ public class DashboardController implements Initializable {
 			stage.initStyle(StageStyle.UTILITY);
 			FXMLLoader loader = new FXMLLoader(App.class.getResource("/register-payment.fxml"));
 			Parent root = loader.load();
-			loader.<RegisterFeeController>getController().initData(clientsTable.getSelectionModel().getSelectedItem());
 			stage.setScene(new Scene(root));
 			stage.show();
 		} catch (IOException e) {

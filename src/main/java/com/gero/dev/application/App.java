@@ -4,6 +4,7 @@ import com.gero.dev.controller.ErrorController;
 import com.gero.dev.persistence.HibernateConnection;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,6 +21,11 @@ public class App extends Application {
 	@Override
 	public void start(Stage stage) {
 		Thread.setDefaultUncaughtExceptionHandler(ErrorController::showError);
+		stage.setOnCloseRequest(e -> {
+			Platform.exit();
+			System.exit(0);
+			
+		});
 		App.primaryStage = stage;
 		setScene("/login.fxml");
 	}

@@ -1,28 +1,31 @@
 package com.gero.dev.domain;
 
 import java.time.Month;
-import java.time.Year;
 import java.time.ZonedDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 
 @Data
 @Entity(name = "fees")
+@IdClass(FeeId.class)
 public class Fee {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
+	@ManyToOne
+	private Client client;
+	
+	@Id
 	private Month month;
 	
-	private Year year;
-	
+	@Id
+	private Integer year;
+
 	private ZonedDateTime paymentDate;
 
 	private Double paymentAmmount;

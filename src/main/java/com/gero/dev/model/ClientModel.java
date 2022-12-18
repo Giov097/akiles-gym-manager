@@ -25,8 +25,8 @@ public class ClientModel {
 	@Setter
 	private SimpleStringProperty enabled;
 	
-//	@Setter
-//	private SimpleStringProperty feeStatus;
+	@Setter
+	private SimpleStringProperty lastFee;
 
 	public Long getDni() {
 		return dni.get();
@@ -40,7 +40,7 @@ public class ClientModel {
 		return enabled.get();
 	}
 	
-//	public String getFeeStatus() {
-//		return feeStatus.get();
-//	}
+	public String getLastFee() {
+		return lastFee.get();
+	}
 }

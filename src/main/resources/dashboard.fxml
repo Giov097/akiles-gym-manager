@@ -25,7 +25,7 @@
                         <TableColumn fx:id="clientNameColumn" maxWidth="600.0" minWidth="150.0" prefWidth="300.0" text="Cliente" />
                         <TableColumn fx:id="dniColumn" editable="false" maxWidth="450.0" minWidth="50.0" prefWidth="150.0" text="DNI" />
                         <TableColumn fx:id="membershipColumn" maxWidth="450.0" minWidth="50.0" prefWidth="149.0" text="Membresía" />
-                        <TableColumn maxWidth="450.0" minWidth="50.0" prefWidth="149.0" text="Estado de cuota" />
+                        <TableColumn fx:id="lastPaymentColumn" maxWidth="450.0" minWidth="50.0" prefWidth="149.0" text="Último pago" />
                      </columns>
                   </TableView>
                   <VBox maxWidth="250.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">

@@ -19,4 +19,5 @@ public class Client {
 	private LocalDateTime createdAt;
 	
 	private Boolean enabled;
+
 }

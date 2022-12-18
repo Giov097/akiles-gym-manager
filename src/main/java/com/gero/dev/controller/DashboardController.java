@@ -59,9 +59,12 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private TableColumn<ClientModel, String> clientNameColumn;
-	
+
 	@FXML
 	private TableColumn<ClientModel, String> membershipColumn;
+	
+	@FXML
+	private TableColumn<ClientModel, String> lastPaymentColumn;
 
 	@FXML
 	private TextField searchInput;
@@ -120,7 +123,9 @@ public class DashboardController implements Initializable {
 		loadData();
 		clientsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
-				registerFeeButton.setDisable(false);
+				if (newSelection.getEnabled().equals("Alta")) {
+					registerFeeButton.setDisable(false);
+				}
 				viewClientButton.setDisable(false);
 			}
 		});
@@ -144,7 +149,9 @@ public class DashboardController implements Initializable {
 		dniColumn.setCellValueFactory(new PropertyValueFactory<>("dni"));
 		clientNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullName"));
 		membershipColumn.setCellValueFactory(new PropertyValueFactory<>("enabled"));
+		lastPaymentColumn.setCellValueFactory(new PropertyValueFactory<>("lastFee"));
 		List<Client> clients = session.createQuery("from clients", Client.class).list();
+		System.out.println(clients);
 		List<ClientModel> model = Mapper.clientModelMapper().map(clients, new TypeToken<List<ClientModel>>() {
 		}.getType());
 		ObservableList<ClientModel> observableList = FXCollections.observableList(model);

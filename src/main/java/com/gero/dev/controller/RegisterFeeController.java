@@ -19,6 +19,7 @@ import com.gero.dev.domain.Client;
 import com.gero.dev.domain.Fee;
 import com.gero.dev.domain.FeeId;
 import com.gero.dev.exception.PaymentExistsException;
+import com.gero.dev.exception.UncompleteDataException;
 import com.gero.dev.persistence.HibernateConnection;
 
 import javafx.collections.FXCollections;
@@ -65,6 +66,7 @@ public class RegisterFeeController implements Initializable {
 	@FXML
 	protected void createFee(ActionEvent actionEvent) {
 		try {
+			validateForm();
 			Fee fee = new Fee();
 			fee.setPaymentDate(paymentDateInput.getValue().atTime(LocalTime.now()));
 			fee.setMonth(Month.of(monthInput.getValue()));
@@ -85,6 +87,29 @@ public class RegisterFeeController implements Initializable {
 				session.getTransaction().rollback();
 			throw new PaymentExistsException(yearInput.getValue(), monthInput.getValue());
 		}
+	}
+
+	private void validateForm() {
+		Optional.ofNullable(monthInput).ifPresent(input -> {
+			if (input.getValue() == null || input.getValue() < 1) {
+				throw new UncompleteDataException();
+			}
+		});
+		Optional.ofNullable(yearInput).ifPresent(input -> {
+			if (input.getValue() == null) {
+				throw new UncompleteDataException();
+			}
+		});
+		Optional.ofNullable(yearInput).ifPresent(input -> {
+			if (input.getValue() == null) {
+				throw new UncompleteDataException();
+			}
+		});
+		Optional.ofNullable(paymentAmmountInput).ifPresent(input -> {
+			if (input.getText() == null || input.getText().isBlank()) {
+				throw new UncompleteDataException();
+			}
+		});
 	}
 
 	@FXML

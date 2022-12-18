@@ -24,6 +24,7 @@
                      <columns>
                         <TableColumn fx:id="clientNameColumn" maxWidth="600.0" minWidth="150.0" prefWidth="300.0" text="Cliente" />
                         <TableColumn fx:id="dniColumn" editable="false" maxWidth="450.0" minWidth="50.0" prefWidth="150.0" text="DNI" />
+                        <TableColumn fx:id="membershipColumn" maxWidth="450.0" minWidth="50.0" prefWidth="149.0" text="Membresía" />
                         <TableColumn maxWidth="450.0" minWidth="50.0" prefWidth="149.0" text="Estado de cuota" />
                      </columns>
                   </TableView>
@@ -36,6 +37,9 @@
                            <VBox.margin>
                               <Insets bottom="10.0" top="10.0" />
                            </VBox.margin>
+                           <font>
+                              <Font name="Franklin Gothic Medium" size="12.0" />
+                           </font>
                         </Button>
                         <Button fx:id="registerFeeButton" disable="true" mnemonicParsing="false" onAction="#handleFee" prefHeight="25.0" prefWidth="206.0" text="Registrar pago">
                            <padding>
@@ -44,14 +48,20 @@
                            <VBox.margin>
                               <Insets bottom="10.0" top="10.0" />
                            </VBox.margin>
+                           <font>
+                              <Font name="Franklin Gothic Medium" size="12.0" />
+                           </font>
                         </Button>
-                        <Button fx:id="viewClientButton" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="206.0" text="Ver cliente">
+                        <Button fx:id="viewClientButton" disable="true" mnemonicParsing="false" onAction="#handleViewClient" prefHeight="25.0" prefWidth="206.0" text="Ver cliente">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                            <VBox.margin>
                               <Insets bottom="10.0" top="10.0" />
                            </VBox.margin>
+                           <font>
+                              <Font name="Franklin Gothic Medium" size="12.0" />
+                           </font>
                         </Button>
                      </children>
                   </VBox>
@@ -61,12 +71,17 @@
          <top>
             <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <items>
-                  <MenuButton mnemonicParsing="false" text="MenuButton">
+                  <MenuButton mnemonicParsing="false" text="Archivo">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Action 1" />
-                        <MenuItem mnemonicParsing="false" text="Action 2" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="Opciones" />
+                        <MenuItem fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" text="Cerrar sesión" />
+                        <MenuItem fx:id="exitButton" mnemonicParsing="false" onAction="#handleExit" text="Salir" />
                      </items>
+                     <font>
+                        <Font name="Franklin Gothic Medium" size="12.0" />
+                     </font>
                   </MenuButton>
+                  <TextField fx:id="searchInput" prefHeight="25.0" prefWidth="375.0" promptText="Buscar" />
                </items>
             </ToolBar>
          </top>

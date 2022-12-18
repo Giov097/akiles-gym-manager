@@ -1,7 +1,7 @@
 package com.gero.dev.controller;
 
 import java.net.URL;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -41,7 +41,7 @@ public class CreateClientController implements Initializable {
 		Client newClient = new Client();
 		newClient.setFullName(fullNameInput.getText());
 		newClient.setDni(Long.valueOf(dniInput.getText()));
-		newClient.setCreatedAt(ZonedDateTime.now());
+		newClient.setCreatedAt(LocalDateTime.now());
 		newClient.setEnabled(true);
 		session.beginTransaction();
 		session.merge(newClient);

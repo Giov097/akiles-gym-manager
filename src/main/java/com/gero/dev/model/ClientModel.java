@@ -1,8 +1,11 @@
 package com.gero.dev.model;
 
+import java.time.LocalDateTime;
+
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -16,6 +19,12 @@ public class ClientModel {
 	@Setter
 	private SimpleStringProperty fullName;
 	
+	@Getter @Setter
+	private LocalDateTime createdAt;
+
+	@Setter
+	private SimpleStringProperty enabled;
+	
 //	@Setter
 //	private SimpleStringProperty feeStatus;
 
@@ -25,6 +34,10 @@ public class ClientModel {
 	
 	public String getFullName() {
 		return fullName.get();
+	}
+	
+	public String getEnabled() {
+		return enabled.get();
 	}
 	
 //	public String getFeeStatus() {

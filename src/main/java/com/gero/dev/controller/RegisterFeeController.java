@@ -2,15 +2,14 @@ package com.gero.dev.controller;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.Year;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javax.persistence.EntityExistsException;
-import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.modelmapper.ModelMapper;
@@ -28,6 +27,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
@@ -56,15 +56,17 @@ public class RegisterFeeController implements Initializable {
 
 	@FXML
 	private TextField paymentAmmountInput;
-	
+
+	@FXML
+	private Button registerPaymentButton;
+
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@FXML
-	@Transactional
 	protected void createFee(ActionEvent actionEvent) {
 		try {
 			Fee fee = new Fee();
-			fee.setPaymentDate(paymentDateInput.getValue().atStartOfDay(ZoneId.systemDefault()));
+			fee.setPaymentDate(paymentDateInput.getValue().atTime(LocalTime.now()));
 			fee.setMonth(Month.of(monthInput.getValue()));
 			fee.setYear(yearInput.getValue().getValue());
 			fee.setPaymentAmmount(Double.valueOf(paymentAmmountInput.getText()));
@@ -79,7 +81,8 @@ public class RegisterFeeController implements Initializable {
 			creationSuccessful();
 			close();
 		} catch (EntityExistsException e) {
-			session.getTransaction().rollback();
+			if (session.getTransaction().isActive())
+				session.getTransaction().rollback();
 			throw new PaymentExistsException(yearInput.getValue(), monthInput.getValue());
 		}
 	}

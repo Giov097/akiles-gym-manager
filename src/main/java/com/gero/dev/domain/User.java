@@ -1,6 +1,6 @@
 package com.gero.dev.domain;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,6 +16,6 @@ public class User {
 
 	private String password;
 
-	private ZonedDateTime createdAt;
+	private LocalDateTime createdAt;
 
 }

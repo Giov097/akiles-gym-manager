@@ -1,9 +1,8 @@
 package com.gero.dev.domain;
 
+import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZonedDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -19,15 +18,17 @@ public class Fee {
 	@Id
 	@ManyToOne
 	private Client client;
-	
+
 	@Id
 	private Month month;
-	
+
 	@Id
 	private Integer year;
 
-	private ZonedDateTime paymentDate;
+	private LocalDateTime paymentDate;
 
 	private Double paymentAmmount;
+	
+	private String observations;
 
 }

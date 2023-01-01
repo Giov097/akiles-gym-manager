@@ -9,6 +9,7 @@ import com.gero.dev.domain.User;
 import com.gero.dev.exception.UserNotFoundException;
 import com.gero.dev.exception.WrongPasswordException;
 import com.gero.dev.persistence.HibernateConnection;
+import com.gero.dev.utils.Scenes;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,7 +34,7 @@ public class LoginController {
 			if (!foundUser.getPassword().equals(passwordInput.getText())) {
 				throw new WrongPasswordException();
 			}
-			App.setScene("/dashboard.fxml");
+			App.setScene(Scenes.DASHBOARD);
 		});
 		if (user.isEmpty()) {
 			throw new UserNotFoundException();

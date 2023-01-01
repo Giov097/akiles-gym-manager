@@ -14,6 +14,7 @@ import javax.persistence.EntityExistsException;
 import org.hibernate.Session;
 import org.modelmapper.ModelMapper;
 
+import com.gero.dev.application.App;
 import com.gero.dev.application.data.SelectedData;
 import com.gero.dev.domain.Client;
 import com.gero.dev.domain.Fee;
@@ -21,6 +22,7 @@ import com.gero.dev.domain.FeeId;
 import com.gero.dev.exception.PaymentExistsException;
 import com.gero.dev.exception.UncompleteDataException;
 import com.gero.dev.persistence.HibernateConnection;
+import com.gero.dev.utils.Scenes;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -60,6 +62,9 @@ public class RegisterFeeController implements Initializable {
 
 	@FXML
 	private Button registerPaymentButton;
+	
+	@FXML
+	private TextField observationsInput;
 
 	private ModelMapper modelMapper = new ModelMapper();
 
@@ -72,6 +77,7 @@ public class RegisterFeeController implements Initializable {
 			fee.setMonth(Month.of(monthInput.getValue()));
 			fee.setYear(yearInput.getValue().getValue());
 			fee.setPaymentAmmount(Double.valueOf(paymentAmmountInput.getText()));
+			fee.setObservations(observationsInput.getText());
 			Client client = session.find(Client.class, Long.valueOf(dniInput.getText()));
 			fee.setClient(client);
 			Optional.ofNullable(session.get(Fee.class, modelMapper.map(fee, FeeId.class))).ifPresent(f -> {
@@ -115,6 +121,7 @@ public class RegisterFeeController implements Initializable {
 	@FXML
 	private void close() {
 		yearInput.getScene().getWindow().hide();
+		App.setScene(Scenes.DASHBOARD);
 	}
 
 	@Override

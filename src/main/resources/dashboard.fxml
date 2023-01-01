@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane animated="false" collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="800.0" minWidth="400.0" prefHeight="800.0" prefWidth="1280.0" text="Dashboard" textAlignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gero.dev.controller.DashboardController">
+<TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="800.0" minWidth="400.0" prefHeight="800.0" prefWidth="1280.0" text="Dashboard" textAlignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gero.dev.controller.DashboardController">
    <content>
       <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
          <center>
@@ -63,6 +63,12 @@
                               <Font name="Franklin Gothic Medium" size="12.0" />
                            </font>
                         </Button>
+                        <Region prefHeight="371.0" prefWidth="203.0" />
+                        <ImageView fitHeight="203.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@akileslogo.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </VBox>
                </children>
@@ -73,7 +79,6 @@
                <items>
                   <MenuButton mnemonicParsing="false" text="Archivo">
                      <items>
-                        <MenuItem disable="true" mnemonicParsing="false" text="Opciones" />
                         <MenuItem fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" text="Cerrar sesión" />
                         <MenuItem fx:id="exitButton" mnemonicParsing="false" onAction="#handleExit" text="Salir" />
                      </items>
@@ -81,10 +86,21 @@
                         <Font name="Franklin Gothic Medium" size="12.0" />
                      </font>
                   </MenuButton>
+                  <MenuButton mnemonicParsing="false" text="Ayuda">
+                     <font>
+                        <Font name="Franklin Gothic Medium" size="12.0" />
+                     </font>
+                     <items>
+                        <MenuItem fx:id="aboutButton" mnemonicParsing="false" onAction="#handleAbout" text="Acerca de" />
+                     </items>
+                  </MenuButton>
                   <TextField fx:id="searchInput" prefHeight="25.0" prefWidth="375.0" promptText="Buscar" />
                </items>
             </ToolBar>
          </top>
       </BorderPane>
    </content>
+   <font>
+      <Font name="Franklin Gothic Demi" size="14.0" />
+   </font>
 </TitledPane>

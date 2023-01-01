@@ -2,7 +2,10 @@ package com.gero.dev.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.hibernate.Session;
@@ -14,6 +17,8 @@ import com.gero.dev.domain.Client;
 import com.gero.dev.model.ClientModel;
 import com.gero.dev.persistence.HibernateConnection;
 import com.gero.dev.utils.Mapper;
+import com.gero.dev.utils.MembershipStatus;
+import com.gero.dev.utils.Scenes;
 import com.gero.dev.utils.StringUtils;
 
 import javafx.application.Platform;
@@ -27,13 +32,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
@@ -62,7 +70,7 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private TableColumn<ClientModel, String> membershipColumn;
-	
+
 	@FXML
 	private TableColumn<ClientModel, String> lastPaymentColumn;
 
@@ -74,22 +82,25 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private MenuItem logoutButton;
+	
+	@FXML
+	private MenuItem aboutButton;
 
 	private Session session = HibernateConnection.getCurrentSession();
 
 	@FXML
 	protected void handleNewClient(ActionEvent event) {
-		openSceneWithClientData("/create-client.fxml");
+		openSceneWithClientData(Scenes.CREATE_CLIENT);
 	}
 
 	@FXML
 	protected void handleFee(ActionEvent actionEvent) {
-		openSceneWithClientData("/register-payment.fxml");
+		openSceneWithClientData(Scenes.REGISTER_CLIENT);
 	}
 
 	@FXML
 	protected void handleViewClient(ActionEvent actionEvent) {
-		openSceneWithClientData("/view-client.fxml");
+		openSceneWithClientData(Scenes.VIEW_CLIENT);
 	}
 
 	private void openSceneWithClientData(String fxml) {
@@ -116,6 +127,18 @@ public class DashboardController implements Initializable {
 	protected void handleLogout(ActionEvent actionEvent) {
 		App.setScene("/login.fxml");
 	}
+	
+	@FXML
+	protected void handleAbout(ActionEvent actionEvent) {
+		String msg = String.format("""
+				Akiles Gym Manager
+				Versión %s
+				Giov097
+				""", 
+				Optional.ofNullable(App.getVersion()).orElse("desconocida"));
+		Alert alert = new Alert(AlertType.INFORMATION, msg, ButtonType.OK);
+		alert.showAndWait();
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -123,7 +146,7 @@ public class DashboardController implements Initializable {
 		loadData();
 		clientsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
-				if (newSelection.getEnabled().equals("Alta")) {
+				if (newSelection.getEnabled().equals(MembershipStatus.ACTIVA.getValue())) {
 					registerFeeButton.setDisable(false);
 				}
 				viewClientButton.setDisable(false);
@@ -133,14 +156,31 @@ public class DashboardController implements Initializable {
 			TableRow<ClientModel> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
 				if (event.getClickCount() == 2 && (!row.isEmpty())) {
-					openSceneWithClientData("/view-client.fxml");
+					openSceneWithClientData(Scenes.VIEW_CLIENT);
 				}
 			});
 			return row;
 		});
+		clientsTable.setRowFactory(tv -> new TableRow<ClientModel>() {
+			@Override
+			protected void updateItem(ClientModel client, boolean empty) {
+				super.updateItem(client, empty);
+				setStyle("");
+				Optional.ofNullable(client).ifPresent(c -> {
+					Optional.ofNullable(c.getEnabled())
+							.filter(e -> e.equalsIgnoreCase(MembershipStatus.BAJA.getValue()))
+							.ifPresent(e -> setStyle("-fx-background-color: #A9A9A9;"));
+					Optional.ofNullable(c.getLastFee())
+							.filter(lf -> (lf.length() > 1
+									&& LocalDateTime.parse(lf, DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm"))
+											.isBefore(LocalDateTime.now().minusMonths(1l))))
+							.ifPresent(lf -> setStyle("-fx-background-color: #FF6347;"));
+				});
+			}
+		});
 		clientsTable.setOnKeyPressed(keyEvent -> {
 			if (keyEvent.getCode() == KeyCode.ENTER) {
-				openSceneWithClientData("/view-client.fxml");
+				openSceneWithClientData(Scenes.VIEW_CLIENT);
 			}
 		});
 	}
@@ -151,7 +191,6 @@ public class DashboardController implements Initializable {
 		membershipColumn.setCellValueFactory(new PropertyValueFactory<>("enabled"));
 		lastPaymentColumn.setCellValueFactory(new PropertyValueFactory<>("lastFee"));
 		List<Client> clients = session.createQuery("from clients", Client.class).list();
-		System.out.println(clients);
 		List<ClientModel> model = Mapper.clientModelMapper().map(clients, new TypeToken<List<ClientModel>>() {
 		}.getType());
 		ObservableList<ClientModel> observableList = FXCollections.observableList(model);

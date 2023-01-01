@@ -11,6 +11,7 @@ import com.gero.dev.application.App;
 import com.gero.dev.domain.Client;
 import com.gero.dev.exception.ClientAlreadyExistsException;
 import com.gero.dev.persistence.HibernateConnection;
+import com.gero.dev.utils.Scenes;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,7 +59,7 @@ public class CreateClientController implements Initializable {
 	@FXML
 	private void close() {
 		fullNameInput.getScene().getWindow().hide();
-		App.setScene("/dashboard.fxml");
+		App.setScene(Scenes.DASHBOARD);
 	}
 
 	@Override

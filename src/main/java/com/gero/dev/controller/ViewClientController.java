@@ -91,7 +91,7 @@ public class ViewClientController implements Initializable {
 
 	@FXML
 	public void handleEnabledStatus(ActionEvent actionEvent) {
-		Alert alert = new Alert(AlertType.CONFIRMATION, "¿Desea cambiar el estado del usuario?");
+		Alert alert = new Alert(AlertType.CONFIRMATION, "¿Desea cambiar el estado del cliente?");
 		alert.showAndWait().ifPresent(res -> {
 			if (res.equals(ButtonType.OK)) {
 				Client client = session.find(Client.class, SelectedData.getClient().getDni());

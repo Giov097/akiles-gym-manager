@@ -26,7 +26,7 @@ public class Mapper {
 	private static Converter<String, SimpleStringProperty> stringToProperty = c -> new SimpleStringProperty(
 			c.getSource());
 	private static Converter<Boolean, SimpleStringProperty> booleanToProperty = c -> new SimpleStringProperty(
-			Boolean.TRUE.equals(c.getSource()) ? "Activa" : "Baja");
+			Boolean.TRUE.equals(c.getSource()) ? MembershipStatus.ACTIVA.getValue() : MembershipStatus.BAJA.getValue());
 	private static Converter<LocalDateTime, SimpleStringProperty> localDatetimeToProperty = c -> new SimpleStringProperty(
 			c.getSource().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")));
 

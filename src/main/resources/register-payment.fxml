@@ -135,6 +135,24 @@
                   <Insets left="40.0" right="40.0" />
                </VBox.margin>
             </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Observaciones">
+                     <font>
+                        <Font name="Franklin Gothic Medium" size="14.0" />
+                     </font>
+                  </Label>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="observationsInput" prefHeight="26.0" prefWidth="165.0">
+                     <font>
+                        <Font name="Franklin Gothic Medium" size="14.0" />
+                     </font>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets left="40.0" right="40.0" />
+               </VBox.margin>
+            </HBox>
          </children>
          <opaqueInsets>
             <Insets />
